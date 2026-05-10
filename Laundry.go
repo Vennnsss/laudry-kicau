@@ -196,3 +196,29 @@ func tampilSemua() {
 		fmt.Println("==============================")
 	}
 }
+
+func tampilKey() {
+	var key string
+	var found bool
+	fmt.Print("Masukkan Kata Kunci (No HP atau Tanggal): ")
+	fmt.Scan(&key)
+
+	fmt.Println("======= Hasil Pencarian =======")
+	for i := 0; i < jumlahTransaksi; i++ {
+		idx := -1
+		for j := 0; j < jumlahPelanggan; j++ {
+			if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
+				idx = j
+			}
+		}
+
+		if dataTransaksi[i].Tanggal == key || (idx != -1 && dataPelanggan[idx.noHp == key) {
+			idx = true
+			fmt.Printf("Tgl: %s | ID: %s | Total: %d\n",
+				dataTransaksi[i].Tanggal, dataTransaksi[i].IDPelanggan, dataTransaksi[i].TotalHarga)
+		}
+	}
+	if !found {
+		fmt.Println("Data tidak ditemukan.")
+	}
+}
