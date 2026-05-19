@@ -193,7 +193,33 @@ func editPelanggan() {
 	}
 }
 
-// HAPUS PELANGGAN
+func hapusPelanggan() {
+	var noHp string
+	var idx int = -1
+
+	fmt.Print("Masukkan no HP pelanggan yang akan dihapus: ")
+	fmt.Scan(&noHp)
+
+	for i := 0; i < jumlahPelanggan; i++ {
+		if dataPelanggan[i].noHp == noHp {
+			idx = i
+		}
+	}
+
+	if idx == -1 {
+		fmt.Println("Pelanggan tidak ditemukan.")
+		return
+	}
+
+	for i := idx; i < jumlahPelanggan-1; i++ {
+		dataPelanggan[i] = dataPelanggan[i+1]
+	}
+
+	dataPelanggan[jumlahPelanggan-1] = Pelanggan{}
+	jumlahPelanggan--
+
+	fmt.Println("Pelanggan berhasil dihapus.")
+}
 
 func tambahTransaksi() {
 	var t Transaksi
@@ -236,7 +262,88 @@ func hitungHarga(berat float64, layanan string) int {
 	return int(berat * 6000)
 }
 
-//EDIT TRANSAKSI
+func editTransaksi() {
+	var namaCari, tanggalCari string
+	var idPelanggan string
+	var idxTrans int = -1
+	var pilihan int
+	var ketemuPelanggan bool
+
+	fmt.Print("Masukkan Nama Pelanggan: ")
+	fmt.Scan(&namaCari)
+	fmt.Print("Masukkan Tanggal Transaksi: ")
+	fmt.Scan(&tanggalCari)
+
+	// Cari ID Pelanggan dari &namaCari
+	for i := 0; i < jumlahPelanggan; i++ {
+		if dataPelanggan[i].Nama == namaCari {
+			idPelanggan = dataPelanggan[i].ID
+			ketemuPelanggan = true
+		}
+	}
+
+	if !ketemuPelanggan {
+		fmt.Println("Pelanggan dengan nama tersebut tidak ditemukan.")
+		return
+	}
+
+	// Cari indeks transaksi dari ID Pelanggan dan Tanggal
+	for i := 0; i < jumlahTransaksi; i++ {
+		if dataTransaksi[i].IDPelanggan == idPelanggan && dataTransaksi[i].Tanggal == tanggalCari {
+			idxTrans = i
+		}
+	}
+
+	if idxTrans == -1 {
+		fmt.Println("Transaksi tidak ditemukan untuk pelanggan dan tanggal tersebut.")
+		return
+	}
+
+	fmt.Println("\n======= Data Transaksi Ditemukan =======")
+	fmt.Println("Nama Pelanggan :", namaCari)
+	fmt.Println("Berat Lama     :", dataTransaksi[idxTrans].Berat, "kg")
+	fmt.Println("Layanan Lama   :", dataTransaksi[idxTrans].Layanan)
+	fmt.Println("Tanggal Lama   :", dataTransaksi[idxTrans].Tanggal)
+	fmt.Println("Total Harga    :", dataTransaksi[idxTrans].TotalHarga)
+	fmt.Println("========================================")
+
+	fmt.Println("Edit")
+	fmt.Println("1. Berat")
+	fmt.Println("2. Layanan")
+	fmt.Println("3. Tanggal")
+	fmt.Println("4. Kembali")
+	fmt.Print("Pilihan (1-4): ")
+	fmt.Scan(&pilihan)
+
+	switch pilihan {
+	case 1:
+		fmt.Print("Masukkan Berat Baru: ")
+		fmt.Scan(&dataTransaksi[idxTrans].Berat)
+		dataTransaksi[idxTrans].TotalHarga = hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
+		fmt.Println("Berat berhasil diubah.")
+
+	case 2:
+		fmt.Print("Masukkan Layanan Baru (Express/Reguler): ")
+		fmt.Scan(&dataTransaksi[idxTrans].Layanan)
+		dataTransaksi[idxTrans].TotalHarga = hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
+		fmt.Println("Layanan berhasil diubah.")
+
+	case 3:
+		fmt.Print("Masukkan Tanggal Baru: ")
+		fmt.Scan(&dataTransaksi[idxTrans].Tanggal)
+		fmt.Println("Tanggal berhasil diubah.")
+
+	case 4:
+		return
+
+	default:
+		fmt.Println("Pilihan tidak valid.")
+		return
+	}
+
+	fmt.Println("\n Transaksi Berhasil Diperbarui! ")
+	fmt.Println("Total Harga Baru saat ini:", dataTransaksi[idxTrans].TotalHarga)
+}
 
 //HAPUS TRANSAKSI
 
