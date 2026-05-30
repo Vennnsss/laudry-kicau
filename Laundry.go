@@ -12,7 +12,6 @@ type Pelanggan struct {
 type tabPelanggan [NMAX]Pelanggan
 
 var dataPelanggan tabPelanggan
-var jumlahPelanggan int
 
 type Transaksi struct {
 	IDPelanggan string
@@ -24,31 +23,46 @@ type Transaksi struct {
 type tabTransaksi [NMAX]Transaksi
 
 var dataTransaksi tabTransaksi
-var jumlahTransaksi int
 
 func main() {
 	var selesai bool
+	var jumlahPelanggan, jumlahTransaksi int
+
+	fmt.Println("========================================")
+	fmt.Println("          LAUNDRY KICAU MANIA           ")
+	fmt.Println("   Tugas Besar Algoritma Pemrograman    ")
+	fmt.Println("      103032500021 & 103032500038       ")
+	fmt.Println("========================================")
+	fmt.Println()
 
 	for !selesai {
-		selesai = Menu()
+		selesai = Menu(&jumlahPelanggan, &jumlahTransaksi)
 	}
 }
 
-func Menu() bool {
+func Menu(nP *int, nT *int) bool {
 	var pilihan int
-	fmt.Println("======= Menu Utama =======")
+	fmt.Println("========================================")
+	fmt.Println("               Menu Utama               ")
+	fmt.Println("========================================")
 	fmt.Println("1. Tampilkan Data")
 	fmt.Println("2. Edit Data")
 	fmt.Println("3. Keluar")
-	fmt.Println("==========================")
-
+	fmt.Println("========================================")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 	switch pilihan {
 	case 1:
-		menuTampil()
+		menuTampil(nP, nT)
+		fmt.Println()
 	case 2:
-		menuEdit()
+		menuEdit(nP, nT)
+		fmt.Println()
 	case 3:
+		fmt.Println("========================================")
+		fmt.Println("   Terima kasih telah menggunakan       ")
+		fmt.Println("       Laundry Kicau Mania!             ")
+		fmt.Println("========================================")
 		return true
 	default:
 		fmt.Println("Mohon Masukan pillihan yang valid.")
@@ -57,40 +71,52 @@ func Menu() bool {
 }
 
 // Menu lanjutan untuk Menampilkan Transaksi
-func menuTampil() {
+func menuTampil(nP *int, nT *int) {
 	var pilihan int
 
-	fmt.Println("=========== Menu Tampilkan Data ===========")
+	fmt.Println("========================================")
+	fmt.Println("          Menu Tampilkan Data           ")
+	fmt.Println("========================================")
 	fmt.Println("1. Tampilkan Semua Transaksi")
 	fmt.Println("2. Tampilkan Sesuai Kata Kunci")
 	fmt.Println("3. Tampilkan Berdasarkan Urutan Transaksi")
-	fmt.Println("4. Pendapatan Total")
-	fmt.Println("5. Kembali")
-	fmt.Println("===========================================")
-
+	fmt.Println("4. Cari Berdasarkan Total Harga")
+	fmt.Println("5. Pendapatan Total")
+	fmt.Println("6. Kembali")
+	fmt.Println("========================================")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 	switch pilihan {
 	case 1:
-		tampilSemua()
+		tampilSemua(nP, nT)
+		fmt.Println()
 	case 2:
-		tampilKey()
+		tampilKey(nP, nT)
+		fmt.Println()
 	case 3:
-		tampilUrutan()
+		tampilUrutan(nP, nT)
+		fmt.Println()
 	case 4:
-		pendapatanTotal()
+		binarySearchHarga(nT)
+		fmt.Println()
 	case 5:
+		pendapatanTotal(nT)
+		fmt.Println()
+	case 6:
+		fmt.Println()
 		return
 	default:
 		fmt.Println("Mohon Masukan pillihan yang valid.")
 	}
-
 }
 
 // Menu lanjutan untuk Mengedit Transaksi
-func menuEdit() {
+func menuEdit(nP *int, nT *int) {
 	var pilihan int
 
-	fmt.Println("=========== Menu Edit Data ===========")
+	fmt.Println("========================================")
+	fmt.Println("            Menu Edit Data              ")
+	fmt.Println("========================================")
 	fmt.Println("1. Tambah Pelanggan")
 	fmt.Println("2. Edit Pelanggan")
 	fmt.Println("3. Hapus Pelanggan")
@@ -98,82 +124,85 @@ func menuEdit() {
 	fmt.Println("5. Edit Transaksi")
 	fmt.Println("6. Hapus Transaksi")
 	fmt.Println("7. Kembali")
-	fmt.Println("======================================")
-
+	fmt.Println("========================================")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 	switch pilihan {
 	case 1:
-		tambahPelanggan()
+		fmt.Println()
+		tambahPelanggan(nP)
 	case 2:
-		editPelanggan()
+		fmt.Println()
+		editPelanggan(nP)
 	case 3:
-		hapusPelanggan()
+		fmt.Println()
+		hapusPelanggan(nP, nT)
 	case 4:
-		tambahTransaksi()
+		fmt.Println()
+		tambahTransaksi(nP, nT)
 	case 5:
-		editTransaksi()
+		fmt.Println()
+		editTransaksi(nP, nT)
 	case 6:
-		hapusTransaksi()
+		fmt.Println()
+		hapusTransaksi(nP, nT)
 	case 7:
+		fmt.Println()
 		return
 	default:
 		fmt.Println("Mohon masukan pillihan yang valid.")
 	}
 }
 
-func tambahPelanggan() {
+func tambahPelanggan(nP *int) {
 	var p Pelanggan
 
-	fmt.Print("Nama: ")
+	fmt.Println("=========== Tambah Pelanggan ===========")
+	fmt.Print("Nama  : ")
 	fmt.Scan(&p.Nama)
 
-	fmt.Print("No Hp: ")
+	fmt.Print("No Hp : ")
 	fmt.Scan(&p.noHp)
 
 	p.ID = p.Nama + p.noHp
-	dataPelanggan[jumlahPelanggan] = p
-	jumlahPelanggan++
-	fmt.Println("Pelanggan Berhasil Ditambah")
+	dataPelanggan[*nP] = p
+	*nP++
+	fmt.Println("Pelanggan berhasil ditambah.")
+	fmt.Println("========================================")
+	fmt.Println()
 }
 
-// ini ga perlu ditampilin tapi keep dulu aja
-func tampilPelanggan() {
-	for i := 0; i < jumlahPelanggan; i++ {
-		fmt.Println(dataPelanggan[i].ID)
-		fmt.Println(dataPelanggan[i].Nama)
-		fmt.Println(dataPelanggan[i].noHp)
-	}
-}
-
-func editPelanggan() {
+func editPelanggan(nP *int) {
 	var noHp, namaBaru, noBaru string
 	var pilihan int
 	var ketemu bool
 
+	fmt.Println("=========== Edit Pelanggan ===========")
 	fmt.Print("Masukkan no HP: ")
 	fmt.Scan(&noHp)
-	for i := 0; i < jumlahPelanggan; i++ {
+	for i := 0; i < *nP; i++ {
 		if dataPelanggan[i].noHp == noHp {
 			ketemu = true
 
-			fmt.Println("Data Lama")
+			fmt.Println("---------------Data Lama---------------")
 			fmt.Println("Nama: ", dataPelanggan[i].Nama)
 			fmt.Println("No HP: ", dataPelanggan[i].noHp)
-			fmt.Println()
+			fmt.Println("---------------------------------------")
 
-			fmt.Println("Apa yang mau diganti?")
+			fmt.Println("Data Pelanggan yang ingin diubah?")
 			fmt.Println("1. Nama")
 			fmt.Println("2. No HP")
 			fmt.Println("3. Kembali")
+			fmt.Print("Masukan pilihan Anda: ")
 			fmt.Scan(&pilihan)
 
 			switch pilihan {
 			case 1:
-				fmt.Println("Input nama baru: ")
+				fmt.Print("Input nama baru: ")
 				fmt.Scan(&namaBaru)
 				dataPelanggan[i].Nama = namaBaru
 			case 2:
-				fmt.Println("Input nomor baru: ")
+				fmt.Print("Input nomor baru: ")
 				fmt.Scan(&noBaru)
 				dataPelanggan[i].noHp = noBaru
 			case 3:
@@ -183,75 +212,95 @@ func editPelanggan() {
 			}
 
 			fmt.Println()
+			fmt.Println("---------------Data Baru---------------")
 			fmt.Println("Data Baru")
-			fmt.Println("Nama:", dataPelanggan[i].Nama)
-			fmt.Println("No HP:", dataPelanggan[i].noHp)
+			fmt.Println("ID    :", dataPelanggan[i].ID)
+			fmt.Println("Nama  :", dataPelanggan[i].Nama)
+			fmt.Println("No HP :", dataPelanggan[i].noHp)
+			fmt.Println("---------------------------------------")
 		}
 	}
 	if !ketemu {
 		fmt.Println("Pelanggan tidak ditemukan, masukan pelanggan terlebih dahulu.")
 	}
+	fmt.Println("========================================")
 }
 
-func hapusPelanggan() {
+func hapusPelanggan(nP *int, nT *int) {
 	var noHp string
 	var idx int = -1
+	var idTarget string
 
+	fmt.Println("=========== Hapus Pelanggan ===========")
 	fmt.Print("Masukkan no HP pelanggan yang akan dihapus: ")
 	fmt.Scan(&noHp)
 
-	for i := 0; i < jumlahPelanggan; i++ {
+	for i := 0; i < *nP; i++ {
 		if dataPelanggan[i].noHp == noHp {
 			idx = i
+			idTarget = dataPelanggan[i].ID
 		}
 	}
 
 	if idx == -1 {
 		fmt.Println("Pelanggan tidak ditemukan.")
+		fmt.Println("========================================")
 		return
 	}
+	for i := 0; i < *nT; i++ {
+		if dataTransaksi[i].IDPelanggan == idTarget {
+			dataTransaksi[i].IDPelanggan = "ANON"
+		}
+	}
 
-	for i := idx; i < jumlahPelanggan-1; i++ {
+	for i := idx; i < *nP-1; i++ {
 		dataPelanggan[i] = dataPelanggan[i+1]
 	}
 
-	dataPelanggan[jumlahPelanggan-1] = Pelanggan{}
-	jumlahPelanggan--
+	dataPelanggan[*nP-1] = Pelanggan{}
+	*nP--
 
 	fmt.Println("Pelanggan berhasil dihapus.")
+	fmt.Println("========================================")
+
 }
 
-func tambahTransaksi() {
+func tambahTransaksi(nP *int, nT *int) {
 	var t Transaksi
 	var noHp string
 	var ketemu bool
 
-	fmt.Print("Masukkan no HP: ")
+	fmt.Println("=========== Tambah Transaksi ===========")
+	fmt.Print("Masukkan no HP            : ")
 	fmt.Scan(&noHp)
 
-	for i := 0; i < jumlahPelanggan && !ketemu; i++ {
+	for i := 0; i < *nP && !ketemu; i++ {
 		if dataPelanggan[i].noHp == noHp {
 			t.IDPelanggan = dataPelanggan[i].ID
 			ketemu = true
-
-			fmt.Print("Berat: ")
+			fmt.Print("Berat                     : ")
 			fmt.Scan(&t.Berat)
-			fmt.Print("Layanan: ")
+			fmt.Print("Layanan (Express/Reguler) : ")
 			fmt.Scan(&t.Layanan)
-			fmt.Print("Tanggal: ")
+			for t.Layanan != "Express" && t.Layanan != "Reguler" {
+				fmt.Print("Mohon masukkan Express atau Reguler: ")
+				fmt.Scan(&t.Layanan)
+			}
+			fmt.Print("Tanggal (dd/mm/yy)        : ")
 			fmt.Scan(&t.Tanggal)
 
 			t.TotalHarga = hitungHarga(t.Berat, t.Layanan)
 
-			dataTransaksi[jumlahTransaksi] = t
-			jumlahTransaksi++
+			dataTransaksi[*nT] = t
+			*nT++
 			fmt.Println("Transaksi berhasil ditambah")
+			fmt.Println("========================================")
 		}
 	}
 	if !ketemu {
 		fmt.Println("Pelanggan tidak ditemukan, masukan pelanggan terlebih dahulu.")
-		tambahPelanggan()
-		tambahTransaksi()
+		tambahPelanggan(nP)
+		tambahTransaksi(nP, nT)
 	}
 }
 
@@ -262,20 +311,20 @@ func hitungHarga(berat float64, layanan string) int {
 	return int(berat * 6000)
 }
 
-func editTransaksi() {
+func editTransaksi(nP *int, nT *int) {
 	var namaCari, tanggalCari string
 	var idPelanggan string
 	var idxTrans int = -1
 	var pilihan int
 	var ketemuPelanggan bool
 
-	fmt.Print("Masukkan Nama Pelanggan: ")
+	fmt.Println("============ Edit Transaksi ============")
+	fmt.Print("Masukkan Nama Pelanggan    : ")
 	fmt.Scan(&namaCari)
-	fmt.Print("Masukkan Tanggal Transaksi: ")
+	fmt.Print("Masukkan Tanggal Transaksi : ")
 	fmt.Scan(&tanggalCari)
 
-	// Cari ID Pelanggan dari &namaCari
-	for i := 0; i < jumlahPelanggan; i++ {
+	for i := 0; i < *nP; i++ {
 		if dataPelanggan[i].Nama == namaCari {
 			idPelanggan = dataPelanggan[i].ID
 			ketemuPelanggan = true
@@ -284,11 +333,11 @@ func editTransaksi() {
 
 	if !ketemuPelanggan {
 		fmt.Println("Pelanggan dengan nama tersebut tidak ditemukan.")
+		fmt.Println("========================================")
 		return
 	}
 
-	// Cari indeks transaksi dari ID Pelanggan dan Tanggal
-	for i := 0; i < jumlahTransaksi; i++ {
+	for i := 0; i < *nT; i++ {
 		if dataTransaksi[i].IDPelanggan == idPelanggan && dataTransaksi[i].Tanggal == tanggalCari {
 			idxTrans = i
 		}
@@ -296,23 +345,23 @@ func editTransaksi() {
 
 	if idxTrans == -1 {
 		fmt.Println("Transaksi tidak ditemukan untuk pelanggan dan tanggal tersebut.")
+		fmt.Println("========================================")
 		return
 	}
 
-	fmt.Println("\n======= Data Transaksi Ditemukan =======")
+	fmt.Println("--------Data Transaksi Ditemukan--------")
 	fmt.Println("Nama Pelanggan :", namaCari)
 	fmt.Println("Berat Lama     :", dataTransaksi[idxTrans].Berat, "kg")
 	fmt.Println("Layanan Lama   :", dataTransaksi[idxTrans].Layanan)
 	fmt.Println("Tanggal Lama   :", dataTransaksi[idxTrans].Tanggal)
 	fmt.Println("Total Harga    :", dataTransaksi[idxTrans].TotalHarga)
-	fmt.Println("========================================")
+	fmt.Println("----------------------------------------")
 
-	fmt.Println("Edit")
+	fmt.Println("Data Transaksi yang ingin diubah: ")
 	fmt.Println("1. Berat")
 	fmt.Println("2. Layanan")
-	fmt.Println("3. Tanggal")
-	fmt.Println("4. Kembali")
-	fmt.Print("Pilihan (1-4): ")
+	fmt.Println("3. Kembali")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 
 	switch pilihan {
@@ -321,75 +370,246 @@ func editTransaksi() {
 		fmt.Scan(&dataTransaksi[idxTrans].Berat)
 		dataTransaksi[idxTrans].TotalHarga = hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
 		fmt.Println("Berat berhasil diubah.")
-
 	case 2:
 		fmt.Print("Masukkan Layanan Baru (Express/Reguler): ")
 		fmt.Scan(&dataTransaksi[idxTrans].Layanan)
 		dataTransaksi[idxTrans].TotalHarga = hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
 		fmt.Println("Layanan berhasil diubah.")
-
 	case 3:
-		fmt.Print("Masukkan Tanggal Baru: ")
-		fmt.Scan(&dataTransaksi[idxTrans].Tanggal)
-		fmt.Println("Tanggal berhasil diubah.")
-
-	case 4:
 		return
-
 	default:
 		fmt.Println("Pilihan tidak valid.")
 		return
 	}
 
-	fmt.Println("\n Transaksi Berhasil Diperbarui! ")
-	fmt.Println("Total Harga Baru saat ini:", dataTransaksi[idxTrans].TotalHarga)
+	fmt.Println("---------Data Telah Diperbarui---------")
+	fmt.Println("Berat Baru     :", dataTransaksi[idxTrans].Berat, "kg")
+	fmt.Println("Layanan Baru   :", dataTransaksi[idxTrans].Layanan)
+	fmt.Println("Tanggal Baru   :", dataTransaksi[idxTrans].Tanggal)
+	fmt.Println("Total Harga    :", dataTransaksi[idxTrans].TotalHarga)
+	fmt.Println("----------------------------------------")
+	fmt.Println("   Transaksi berhasil diperbarui! ")
+	fmt.Println("========================================")
 }
 
-//HAPUS TRANSAKSI
+func hapusTransaksi(nP *int, nT *int) {
+	var noCari, tanggalCari, idPelanggan string
+	var ketemuPelanggan bool
+	var idx int = -1
 
-func tampilSemua() {
-	for i := 0; i < jumlahTransaksi; i++ {
-		for j := 0; j < jumlahPelanggan; j++ {
-			if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
-				fmt.Println("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
-				fmt.Println("Nama		  :", dataPelanggan[j].Nama)
-				fmt.Println("No HP		  :", dataPelanggan[j].noHp)
-				fmt.Println("Berat        :", dataTransaksi[i].Berat)
-				fmt.Println("Layanan      :", dataTransaksi[i].Layanan)
-				fmt.Println("Tanggal      :", dataTransaksi[i].Tanggal)
-				fmt.Println("Total Harga  :", dataTransaksi[i].TotalHarga)
-				fmt.Println("==============================")
+	fmt.Println("=========== Hapus Transaksi ===========")
+	fmt.Print("Masukan No Pelanggan      : ")
+	fmt.Scan(&noCari)
+	fmt.Print("Masukan Tanggal Transaksi : ")
+	fmt.Scan(&tanggalCari)
+
+	for i := 0; i < *nP; i++ {
+		if dataPelanggan[i].noHp == noCari {
+			idPelanggan = dataPelanggan[i].ID
+			ketemuPelanggan = true
+		}
+	}
+
+	if !ketemuPelanggan {
+		fmt.Println("Pelanggan tidak ditemukan.")
+		fmt.Println("========================================")
+		return
+	}
+
+	for i := 0; i < *nT; i++ {
+		if dataTransaksi[i].IDPelanggan == idPelanggan && dataTransaksi[i].Tanggal == tanggalCari {
+			idx = i
+		}
+	}
+
+	if idx == -1 {
+		fmt.Println("Transaksi tidak ditemukan.")
+		fmt.Println("========================================")
+		return
+	}
+
+	for i := idx; i < *nT-1; i++ {
+		dataTransaksi[i] = dataTransaksi[i+1]
+	}
+	dataTransaksi[*nT-1] = Transaksi{}
+	*nT--
+	fmt.Println("Transaksi berhasil dihapus.")
+	fmt.Println("========================================")
+}
+
+func tampilSemua(nP *int, nT *int) {
+	if *nT == 0 {
+		fmt.Println("Tidak ada transaksi, silahkan tambahkan transaksi terlebih dahulu")
+		fmt.Println()
+		return
+	}
+	fmt.Println("=========== Semua Transaksi ===========")
+	for i := 0; i < *nT; i++ {
+		if dataTransaksi[i].IDPelanggan == "ANON" {
+			fmt.Println("----------------------------------------")
+			fmt.Println("ID Pelanggan : ANON")
+			fmt.Println("Nama         : Anonymous")
+			fmt.Println("No HP        : -")
+			fmt.Println("Berat        :", dataTransaksi[i].Berat)
+			fmt.Println("Layanan      :", dataTransaksi[i].Layanan)
+			fmt.Println("Tanggal      :", dataTransaksi[i].Tanggal)
+			fmt.Println("Total Harga  :", dataTransaksi[i].TotalHarga)
+			fmt.Println("----------------------------------------")
+
+		} else {
+			for j := 0; j < *nP; j++ {
+				if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
+					fmt.Println("----------------------------------------")
+					fmt.Println("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
+					fmt.Println("Nama         :", dataPelanggan[j].Nama)
+					fmt.Println("No HP        :", dataPelanggan[j].noHp)
+					fmt.Println("Berat        :", dataTransaksi[i].Berat)
+					fmt.Println("Layanan      :", dataTransaksi[i].Layanan)
+					fmt.Println("Tanggal      :", dataTransaksi[i].Tanggal)
+					fmt.Println("Total Harga  :", dataTransaksi[i].TotalHarga)
+					fmt.Println("----------------------------------------")
+				}
 			}
 		}
+		fmt.Println("========================================")
 	}
 }
 
-func tampilKey() {
+func tampilKey(nP *int, nT *int) {
 	var key string
 	var found bool
-	fmt.Print("Masukkan Kata Kunci (No HP atau Tanggal): ")
+	fmt.Println("===== Cari Berdasarkan Kata Kunci =====")
+	fmt.Print("Masukkan Kata Kunci (No HP/Tanggal): ")
 	fmt.Scan(&key)
 
-	fmt.Println("======= Hasil Pencarian =======")
-	for i := 0; i < jumlahTransaksi; i++ {
+	fmt.Println("------------Hasil Pencarian------------")
+	for i := 0; i < *nT; i++ {
 		idx := -1
-		for j := 0; j < jumlahPelanggan; j++ {
+		for j := 0; j < *nP; j++ {
 			if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
 				idx = j
 			}
 		}
-
 		if dataTransaksi[i].Tanggal == key || (idx != -1 && dataPelanggan[idx].noHp == key) {
 			found = true
-			fmt.Printf("Tgl: %s | ID: %s | Total: %d\n",
-				dataTransaksi[i].Tanggal, dataTransaksi[i].IDPelanggan, dataTransaksi[i].TotalHarga)
+			fmt.Println("Tanggal     :", dataTransaksi[i].Tanggal)
+			fmt.Println("ID          :", dataTransaksi[i].IDPelanggan)
+			fmt.Println("Total Harga :", dataTransaksi[i].TotalHarga)
+			fmt.Println("-----------------------------------------")
 		}
 	}
 	if !found {
 		fmt.Println("Data tidak ditemukan.")
 	}
+	fmt.Println("========================================")
 }
 
-//PENDAPATAN TOTAL
+func pendapatanTotal(nT *int) {
+	total := hitungTotalRekursif(0, *nT)
+	fmt.Println("=========== Total Pendapatan ===========")
+	fmt.Println("Jumlah transaksi         :", *nT)
+	fmt.Println("Total seluruh pendapatan :", total)
+	fmt.Println("========================================")
+}
 
-//MENAMPILKAN PAKE SORTING
+func hitungTotalRekursif(i int, n int) int {
+	if i >= n {
+		return 0
+	}
+	return dataTransaksi[i].TotalHarga + hitungTotalRekursif(i+1, n)
+}
+
+func tampilUrutan(nP *int, nT *int) {
+	var pilihan int
+
+	fmt.Println("========== Urutkan Transaksi ==========")
+	fmt.Println("1. Urutkan dari yang terkecil ke terbesar")
+	fmt.Println("2. Urutkan dari yang terbesar ke terkecil")
+	fmt.Println("=======================================")
+	fmt.Scan(&pilihan)
+	switch pilihan {
+	case 1:
+		selectionSortAscending(nT)
+		fmt.Println("---------Data Ascending---------")
+		tampilSemua(nP, nT)
+	case 2:
+		insertionSortDescending(nT)
+		fmt.Println("---------Data Descending---------")
+		tampilSemua(nP, nT)
+	default:
+		fmt.Println("Pilihan tidak valid.")
+		fmt.Println("========================================")
+	}
+}
+
+func selectionSortAscending(nT *int) {
+	var pass, idx, i int
+	var temp Transaksi
+	pass = 0
+	for pass < *nT-1 {
+		idx = pass
+		i = pass + 1
+		for i < *nT {
+			if dataTransaksi[idx].TotalHarga > dataTransaksi[i].TotalHarga {
+				idx = i
+			}
+			i++
+		}
+		temp = dataTransaksi[pass]
+		dataTransaksi[pass] = dataTransaksi[idx]
+		dataTransaksi[idx] = temp
+		pass++
+	}
+}
+
+func insertionSortDescending(nT *int) {
+	var pass, i int
+	var temp Transaksi
+	pass = 1
+	for pass < *nT {
+		temp = dataTransaksi[pass]
+		i = pass - 1
+		for i >= 0 && temp.TotalHarga > dataTransaksi[i].TotalHarga {
+			dataTransaksi[i+1] = dataTransaksi[i]
+			i--
+		}
+		dataTransaksi[i+1] = temp
+		pass++
+	}
+}
+
+func binarySearchHarga(nT *int) {
+	selectionSortAscending(nT)
+	var cari int
+	var left, right, mid int
+	var ketemu bool
+
+	fmt.Println("===== Cari Berdasarkan Total Harga =====")
+	fmt.Print("Masukkan total harga yang dicari: ")
+	fmt.Scan(&cari)
+
+	left = 0
+	right = *nT - 1
+
+	for left <= right && !ketemu {
+		mid = (left + right) / 2
+
+		if dataTransaksi[mid].TotalHarga == cari {
+			ketemu = true
+			fmt.Println("-------------Data Ditemukan-------------")
+			fmt.Println("ID Pelanggan :", dataTransaksi[mid].IDPelanggan)
+			fmt.Println("Tanggal      :", dataTransaksi[mid].Tanggal)
+			fmt.Println("Layanan      :", dataTransaksi[mid].Layanan)
+			fmt.Println("Total Harga  :", dataTransaksi[mid].TotalHarga)
+			fmt.Println("----------------------------------------")
+		} else if cari < dataTransaksi[mid].TotalHarga {
+			right = mid - 1
+		} else {
+			left = mid + 1
+		}
+	}
+	if !ketemu {
+		fmt.Println("Data tidak ditemukan.")
+	}
+	fmt.Println("========================================")
+}
