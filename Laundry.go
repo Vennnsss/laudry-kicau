@@ -65,7 +65,7 @@ func Menu(nP *int, nT *int) bool {
 		fmt.Println("========================================")
 		return true
 	default:
-		fmt.Println("Mohon Masukan pillihan yang valid.")
+		fmt.Println("Mohon Masukan pilihan yang valid.")
 	}
 	return false
 }
@@ -106,7 +106,7 @@ func menuTampil(nP *int, nT *int) {
 		fmt.Println()
 		return
 	default:
-		fmt.Println("Mohon Masukan pillihan yang valid.")
+		fmt.Println("Mohon Masukan pilihan yang valid.")
 	}
 }
 
@@ -150,7 +150,7 @@ func menuEdit(nP *int, nT *int) {
 		fmt.Println()
 		return
 	default:
-		fmt.Println("Mohon masukan pillihan yang valid.")
+		fmt.Println("Mohon masukan pilihan yang valid.")
 	}
 }
 
@@ -208,7 +208,7 @@ func editPelanggan(nP *int) {
 			case 3:
 				return
 			default:
-				fmt.Println("Mohon masukan pillihan yang valid.")
+				fmt.Println("Mohon masukan pilihan yang valid.")
 			}
 
 			fmt.Println()
@@ -373,6 +373,10 @@ func editTransaksi(nP *int, nT *int) {
 	case 2:
 		fmt.Print("Masukkan Layanan Baru (Express/Reguler): ")
 		fmt.Scan(&dataTransaksi[idxTrans].Layanan)
+		for dataTransaksi[idxTrans].Layanan != "Express" && dataTransaksi[idxTrans].Layanan != "Reguler" {
+			fmt.Print("Mohon masukkan Express atau Reguler: ")
+			fmt.Scan(&dataTransaksi[idxTrans].Layanan)
+		}
 		dataTransaksi[idxTrans].TotalHarga = hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
 		fmt.Println("Layanan berhasil diubah.")
 	case 3:
@@ -494,6 +498,7 @@ func tampilKey(nP *int, nT *int) {
 			found = true
 			fmt.Println("Tanggal     :", dataTransaksi[i].Tanggal)
 			fmt.Println("ID          :", dataTransaksi[i].IDPelanggan)
+			fmt.Println("Nama        :", dataPelanggan[idx].Nama)
 			fmt.Println("Total Harga :", dataTransaksi[i].TotalHarga)
 			fmt.Println("-----------------------------------------")
 		}
