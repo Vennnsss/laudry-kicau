@@ -662,3 +662,5 @@ func hitungTotalRekursif(i int, n int, awal string, akhir string) int {
 
 	return total + hitungTotalRekursif(i+1, n, awal, akhir)
 }
+
+// tes buat dicommit
