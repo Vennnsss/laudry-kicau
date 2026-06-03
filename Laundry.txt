@@ -1,18 +1,22 @@
 program laundryKicauMania
+
 kamus global
-  const NMAX integer <- 1000
-  type tabPelanggan array[0..NMAX] of Pelanggan
-  type tabTransaksi array[0..NMAX] of Transaksi
+  const NMAX : integer <- 1000
+
   type Pelanggan <
     ID, Nama, noHp : string
   >
+  type tabPelanggan : array[0..NMAX] of Pelanggan
+
   type Transaksi <
     IDPelanggan, Tanggal, Layanan : string
     Berat                         : real
     TotalHarga                    : integer
   >
-  dataPelanggan  : tabPelanggan
-  dataTransaksi  : tabTransaksi
+  type tabTransaksi : array[0..NMAX] of Transaksi
+
+  dataPelanggan : tabPelanggan
+  dataTransaksi : tabTransaksi
 
 kamus lokal
   jumlahPelanggan, jumlahTransaksi : integer
@@ -24,151 +28,193 @@ algoritma
   output("   Tugas Besar Algoritma Pemrograman    ")
   output("      103032500021 & 103032500038       ")
   output("========================================")
+
   selesai <- false
   while not selesai do
     selesai <- Menu(jumlahPelanggan, jumlahTransaksi)
   endwhile
 endprogram
 
+
 function Menu(in/out nP, nT : integer) -> boolean
+
 kamus
   pilihan : integer
+
 algoritma
   output("========================================")
   output("               Menu Utama               ")
   output("========================================")
   output("1. Tampilkan Data")
-  output("2. Edit Data")
-  output("3. Keluar")
+  output("2. Tambah Data")
+  output("3. Edit Data")
+  output("4. Keluar")
   output("========================================")
   output("Masukan pilihan Anda: ")
   input(pilihan)
-  SWITCH (pilihan)
+
+  SWITCH(pilihan)
     CASE 1:
       menuTampil(nP, nT)
     CASE 2:
-      menuEdit(nP, nT)
+      menuTambah(nP, nT)
     CASE 3:
+      menuEdit(nP, nT)
+    CASE 4:
       output("========================================")
       output("   Terima kasih telah menggunakan       ")
       output("       Laundry Kicau Mania!             ")
       output("========================================")
       return true
     DEFAULT:
-      output("Mohon Masukan pillihan yang valid.")
+      output("Mohon Masukan pilihan yang valid.")
   ENDSWITCH
   return false
 endfunction
 
-procedure menuTampil(in/out nP, nT : integer)
+
+procedure menuTambah(in/out nP, nT : integer)
+
 kamus
   pilihan : integer
+
+algoritma
+  output("========================================")
+  output("           Menu Tambah Data             ")
+  output("========================================")
+  output("1. Tambah Pelanggan")
+  output("2. Tambah Transaksi")
+  output("3. Kembali")
+  output("========================================")
+  output("Masukan pilihan Anda: ")
+  input(pilihan)
+
+  SWITCH(pilihan)
+    CASE 1:
+      tambahPelanggan(nP)
+    CASE 2:
+      tambahTransaksi(nP, nT)
+    CASE 3:
+      return
+    DEFAULT:
+      output("Mohon masukan pilihan yang valid.")
+  ENDSWITCH
+endprocedure
+
+
+procedure menuTampil(in/out nP, nT : integer)
+
+kamus
+  pilihan : integer
+
 algoritma
   output("========================================")
   output("          Menu Tampilkan Data           ")
   output("========================================")
   output("1. Tampilkan Semua Transaksi")
   output("2. Tampilkan Sesuai Kata Kunci")
-  output("3. Tampilkan Berdasarkan Urutan Transaksi")
-  output("4. Cari Berdasarkan Total Harga")
-  output("5. Pendapatan Total")
-  output("6. Kembali")
+  output("3. Urutkan Berdasarkan Harga")
+  output("4. Urutkan Berdasarkan Tanggal")
+  output("5. Cari Berdasarkan Total Harga")
+  output("6. Pendapatan Periode")
+  output("7. Kembali")
   output("========================================")
   output("Masukan pilihan Anda: ")
   input(pilihan)
-  SWITCH (pilihan)
+
+  SWITCH(pilihan)
     CASE 1:
       tampilSemua(nP, nT)
     CASE 2:
       tampilKey(nP, nT)
     CASE 3:
-      tampilUrutan(nP, nT)
+      urutHarga(nP, nT)
     CASE 4:
-      binarySearchHarga(nT)
+      urutTanggal(nP, nT)
     CASE 5:
-      pendapatanTotal(nT)
+      binarySearchHarga(nT)
     CASE 6:
+      pendapatanPeriode(nT)
+    CASE 7:
       return
     DEFAULT:
-      output("Mohon Masukan pillihan yang valid.")
+      output("Mohon Masukan pilihan yang valid.")
   ENDSWITCH
 endprocedure
 
 
 procedure menuEdit(in/out nP, nT : integer)
+
 kamus
   pilihan : integer
+
 algoritma
   output("========================================")
   output("            Menu Edit Data              ")
   output("========================================")
-  output("1. Tambah Pelanggan")
-  output("2. Edit Pelanggan")
-  output("3. Hapus Pelanggan")
-  output("4. Tambah Transaksi")
-  output("5. Edit Transaksi")
-  output("6. Hapus Transaksi")
-  output("7. Kembali")
+  output("1. Edit Pelanggan")
+  output("2. Hapus Pelanggan")
+  output("3. Edit Transaksi")
+  output("4. Hapus Transaksi")
+  output("5. Kembali")
   output("========================================")
   output("Masukan pilihan Anda: ")
   input(pilihan)
-  SWITCH (pilihan)
+
+  SWITCH(pilihan)
     CASE 1:
-      tambahPelanggan(nP)
-    CASE 2:
       editPelanggan(nP)
-    CASE 3:
+    CASE 2:
       hapusPelanggan(nP, nT)
-    CASE 4:
-      tambahTransaksi(nP, nT)
-    CASE 5:
+    CASE 3:
       editTransaksi(nP, nT)
-    CASE 6:
+    CASE 4:
       hapusTransaksi(nP, nT)
-    CASE 7:
+    CASE 5:
       return
     DEFAULT:
-      output("Mohon masukan pillihan yang valid.")
+      output("Mohon masukan pilihan yang valid.")
   ENDSWITCH
 endprocedure
 
+
 procedure tambahPelanggan(in/out nP : integer)
+
 kamus
   p : Pelanggan
+
 algoritma
   output("=========== Tambah Pelanggan ===========")
   output("Nama  : ")
   input(p.Nama)
-
   output("No Hp : ")
   input(p.noHp)
-
   p.ID <- p.Nama + p.noHp
   dataPelanggan[nP] <- p
   nP <- nP + 1
+
   output("Pelanggan berhasil ditambah.")
   output("========================================")
 endprocedure
 
+
 procedure editPelanggan(in/out nP : integer)
+
 kamus
   noHp, namaBaru, noBaru : string
   pilihan, i             : integer
   ketemu                 : boolean
+
 algoritma
   ketemu <- false
 
   output("=========== Edit Pelanggan ===========")
   output("Masukkan no HP: ")
   input(noHp)
+
   for i <- 0 to nP - 1 do
     if dataPelanggan[i].noHp == noHp then
       ketemu <- true
-      output("---------------Data Lama---------------")
-      output("Nama: ", dataPelanggan[i].Nama)
-      output("No HP: ", dataPelanggan[i].noHp)
-      output("---------------------------------------")
-
       output("Data Pelanggan yang ingin diubah?")
       output("1. Nama")
       output("2. No HP")
@@ -176,7 +222,7 @@ algoritma
       output("Masukan pilihan Anda: ")
       input(pilihan)
 
-      SWITCH (pilihan)
+      SWITCH(pilihan)
         CASE 1:
           output("Input nama baru: ")
           input(namaBaru)
@@ -188,29 +234,30 @@ algoritma
         CASE 3:
           return
         DEFAULT:
-          output("Mohon masukan pillihan yang valid.")
+          output("Mohon masukan pilihan yang valid.")
       ENDSWITCH
 
-      output("---------------Data Baru---------------")
-      output("Data Baru")
-      output("ID    :", dataPelanggan[i].ID)
-      output("Nama  :", dataPelanggan[i].Nama)
-      output("No HP :", dataPelanggan[i].noHp)
-      output("---------------------------------------")
+      output("Data pelanggan berhasil diubah.")
+      output("========================================")
     endif
   endfor
+
   if not ketemu then
     output("Pelanggan tidak ditemukan, masukan pelanggan terlebih dahulu.")
+    output("========================================")
   endif
-  output("========================================")
 endprocedure
 
+
 procedure hapusPelanggan(in/out nP, nT : integer)
+
 kamus
   noHp, idTarget : string
   idx, i         : integer
+
 algoritma
   idx <- -1
+
   output("=========== Hapus Pelanggan ===========")
   output("Masukkan no HP pelanggan yang akan dihapus: ")
   input(noHp)
@@ -225,66 +272,79 @@ algoritma
   if idx == -1 then
     output("Pelanggan tidak ditemukan.")
     output("========================================")
-  else
-    for i <- 0 to nT - 1 do
-      if dataTransaksi[i].IDPelanggan == idTarget then
-        dataTransaksi[i].IDPelanggan <- "ANON"
-      endif
-    endfor
-
-    for i <- idx to nP - 2 do
-      dataPelanggan[i] <- dataPelanggan[i+1]
-    endfor
-    nP <- nP - 1
-    output("Pelanggan berhasil dihapus.")
-    output("========================================")
+    return
   endif
+
+  for i <- 0 to nT - 1 do
+    if dataTransaksi[i].IDPelanggan == idTarget then
+      dataTransaksi[i].IDPelanggan <- "ANON"
+    endif
+  endfor
+
+  for i <- idx to nP - 2 do
+    dataPelanggan[i] <- dataPelanggan[i+1]
+  endfor
+  nP <- nP - 1
+
+  output("Pelanggan berhasil dihapus.")
+  output("========================================")
 endprocedure
 
+
 procedure tambahTransaksi(in/out nP, nT : integer)
+
 kamus
-  t      : Transaksi
-  noHp   : string
+  t : Transaksi
+  noHp : string
   ketemu : boolean
-  i      : integer
+  hari, bulan, tahun : string
+  i : integer
+
 algoritma
   ketemu <- false
   output("=========== Tambah Transaksi ===========")
   output("Masukkan no HP            : ")
   input(noHp)
-
   i <- 0
+
   while i < nP and not ketemu do
     if dataPelanggan[i].noHp == noHp then
-      t.IDPelanggan <- dataPelanggan[i].ID
       ketemu <- true
+      t.IDPelanggan <- dataPelanggan[i].ID
+
       output("Berat                     : ")
       input(t.Berat)
       output("Layanan (Express/Reguler) : ")
       input(t.Layanan)
+
       while t.Layanan != "Express" and t.Layanan != "Reguler" do
         output("Mohon masukkan Express atau Reguler: ")
         input(t.Layanan)
       endwhile
-      output("Tanggal (dd/mm/yy)        : ")
-      input(t.Tanggal)
 
+      output("Tanggal (dd mm yyyy)      : ")
+      input(hari, bulan, tahun)
+      t.Tanggal <- tahun + bulan + hari
       t.TotalHarga <- hitungHarga(t.Berat, t.Layanan)
+
       dataTransaksi[nT] <- t
       nT <- nT + 1
+
       output("Transaksi berhasil ditambah")
       output("========================================")
     endif
     i <- i + 1
   endwhile
+
   if not ketemu then
     output("Pelanggan tidak ditemukan, masukan pelanggan terlebih dahulu.")
-    tambahPelanggan(nP)
-    tambahTransaksi(nP, nT)
+    output("========================================")
   endif
 endprocedure
 
+
 function hitungHarga(in berat : real, in layanan : string) -> integer
+
 algoritma
   if layanan == "Express" then
     return integer(berat * 9000)
@@ -293,123 +353,35 @@ algoritma
   endif
 endfunction
 
+
 procedure editTransaksi(in/out nP, nT : integer)
+
 kamus
-  namaCari, tanggalCari, idPelanggan : string
-  idxTrans, pilihan, i               : integer
-  ketemuPelanggan                    : boolean
+  namaCari, tanggalCari : string
+  idPelanggan : string
+  idx, pilihan : integer
+  hari, bulan, tahun : string
+  i : integer
+
 algoritma
-  idxTrans <- -1
-  ketemuPelanggan <- false
+  idx <- -1
+
   output("============ Edit Transaksi ============")
-  output("Masukkan Nama Pelanggan    : ")
+  output("Masukkan Nama Pelanggan                 : ")
   input(namaCari)
-  output("Masukkan Tanggal Transaksi : ")
-  input(tanggalCari)
+  output("Masukkan Tanggal Transaksi (dd mm yyyy) : ")
+  input(hari, bulan, tahun)
+  tanggalCari <- tahun + bulan + hari
 
   for i <- 0 to nP - 1 do
     if dataPelanggan[i].Nama == namaCari then
       idPelanggan <- dataPelanggan[i].ID
-      ketemuPelanggan <- true
     endif
   endfor
-
-  if not ketemuPelanggan then
-    output("Pelanggan dengan nama tersebut tidak ditemukan.")
-    output("========================================")
-    return
-  endif
 
   for i <- 0 to nT - 1 do
-    if dataTransaksi[i].IDPelanggan == idPelanggan and dataTransaksi[i].Tanggal == tanggalCari then
-      idxTrans <- i
-    endif
-  endfor
-
-  if idxTrans == -1 then
-    output("Transaksi tidak ditemukan untuk pelanggan dan tanggal tersebut.")
-    output("========================================")
-    return
-  endif
-
-  output("--------Data Transaksi Ditemukan--------")
-  output("Nama Pelanggan :", namaCari)
-  output("Berat Lama     :", dataTransaksi[idxTrans].Berat, "kg")
-  output("Layanan Lama   :", dataTransaksi[idxTrans].Layanan)
-  output("Tanggal Lama   :", dataTransaksi[idxTrans].Tanggal)
-  output("Total Harga    :", dataTransaksi[idxTrans].TotalHarga)
-  output("----------------------------------------")
-
-  output("Data Transaksi yang ingin diubah: ")
-  output("1. Berat")
-  output("2. Layanan")
-  output("3. Kembali")
-  output("Masukan pilihan Anda: ")
-  input(pilihan)
-
-  SWITCH (pilihan)
-    CASE 1:
-      output("Masukkan Berat Baru: ")
-      input(dataTransaksi[idxTrans].Berat)
-      dataTransaksi[idxTrans].TotalHarga <- hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
-      output("Berat berhasil diubah.")
-    CASE 2:
-      output("Masukkan Layanan Baru (Express/Reguler): ")
-      input(dataTransaksi[idxTrans].Layanan)
-      while dataTransaksi[idxTrans].Layanan != "Express" and dataTransaksi[idxTrans].Layanan != "Reguler" do
-        output("Mohon masukkan Express atau Reguler: ")
-        input(dataTransaksi[idxTrans].Layanan)
-      endwhile
-      dataTransaksi[idxTrans].TotalHarga <- hitungHarga(dataTransaksi[idxTrans].Berat, dataTransaksi[idxTrans].Layanan)
-      output("Layanan berhasil diubah.")
-    CASE 3:
-      return
-    DEFAULT:
-      output("Pilihan tidak valid.")
-    ENDSWITCH
-
-    if pilihan == 1 or pilihan == 2 then
-      output("---------Data Telah Diperbarui---------")
-      output("Berat Baru     :", dataTransaksi[idxTrans].Berat, "kg")
-      output("Layanan Baru   :", dataTransaksi[idxTrans].Layanan)
-      output("Tanggal Baru   :", dataTransaksi[idxTrans].Tanggal)
-      output("Total Harga    :", dataTransaksi[idxTrans].TotalHarga)
-      output("----------------------------------------")
-      output("   Transaksi berhasil diperbarui! ")
-      output("========================================")
-    endif
-endprocedure
-
-procedure hapusTransaksi(in/out nP, nT : integer)
-kamus
-  noCari, tanggalCari, idPelanggan : string
-  ketemuPelanggan                  : boolean
-  idx, i                           : integer
-algoritma
-  ketemuPelanggan <- false
-  idx <- -1
-
-  output("=========== Hapus Transaksi ===========")
-  output("Masukan No Pelanggan      : ")
-  input(noCari)
-  output("Masukan Tanggal Transaksi : ")
-  input(tanggalCari)
-
-  for i <- 0 to nP - 1 do
-    if dataPelanggan[i].noHp == noCari then
-      idPelanggan <- dataPelanggan[i].ID
-      ketemuPelanggan <- true
-    endif
-  endfor
-
-  if not ketemuPelanggan then
-    output("Pelanggan tidak ditemukan.")
-    output("========================================")
-    return
-  endif
-
-  for i <- 0 to nT - 1 do
-    if dataTransaksi[i].IDPelanggan == idPelanggan and dataTransaksi[i].Tanggal == tanggalCari then
+    if dataTransaksi[i].IDPelanggan == idPelanggan and
+       dataTransaksi[i].Tanggal == tanggalCari then
       idx <- i
     endif
   endfor
@@ -419,18 +391,94 @@ algoritma
     output("========================================")
     return
   endif
-  
+
+  output("Data Transaksi yang ingin diubah: ")
+  output("1. Berat")
+  output("2. Layanan")
+  output("3. Kembali")
+  output("Masukan pilihan Anda: ")
+  input(pilihan)
+
+  SWITCH(pilihan)
+    CASE 1:
+      output("Masukkan Berat Baru: ")
+      input(dataTransaksi[idx].Berat)
+    CASE 2:
+      output("Masukkan Layanan Baru (Express/Reguler): ")
+      input(dataTransaksi[idx].Layanan)
+      while dataTransaksi[idx].Layanan != "Express" and
+            dataTransaksi[idx].Layanan != "Reguler" do
+        output("Mohon masukkan Express atau Reguler: ")
+        input(dataTransaksi[idx].Layanan)
+      endwhile
+    CASE 3:
+      return
+    DEFAULT:
+      output("Pilihan tidak valid.")
+      return
+  ENDSWITCH
+
+  dataTransaksi[idx].TotalHarga <- hitungHarga(
+    dataTransaksi[idx].Berat,
+    dataTransaksi[idx].Layanan
+  )
+  output("Transaksi berhasil diperbarui!")
+  output("========================================")
+endprocedure
+
+
+procedure hapusTransaksi(in/out nP, nT : integer)
+
+kamus
+  noCari, tanggalCari, idPelanggan : string
+  idx, i : integer
+  hari, bulan, tahun : string
+
+algoritma
+  idx <- -1
+
+  output("=========== Hapus Transaksi ===========")
+  output("Masukan No Pelanggan                    : ")
+  input(noCari)
+  output("Masukkan Tanggal Transaksi (dd mm yyyy) : ")
+  input(hari, bulan, tahun)
+  tanggalCari <- tahun + bulan + hari
+
+  for i <- 0 to nP - 1 do
+    if dataPelanggan[i].noHp == noCari then
+      idPelanggan <- dataPelanggan[i].ID
+    endif
+  endfor
+
+  for i <- 0 to nT - 1 do
+    if dataTransaksi[i].IDPelanggan == idPelanggan and
+       dataTransaksi[i].Tanggal == tanggalCari then
+      idx <- i
+    endif
+  endfor
+
+  if idx == -1 then
+    output("Transaksi tidak ditemukan.")
+    output("========================================")
+    return
+  endif
+
   for i <- idx to nT - 2 do
     dataTransaksi[i] <- dataTransaksi[i+1]
   endfor
   nT <- nT - 1
+
   output("Transaksi berhasil dihapus.")
   output("========================================")
 endprocedure
 
+
 procedure tampilSemua(in nP, nT : integer)
+
 kamus
   i, j : integer
+  nama, nohp : string
+
 algoritma
   if nT == 0 then
     output("Tidak ada transaksi, silahkan tambahkan transaksi terlebih dahulu")
@@ -438,109 +486,131 @@ algoritma
   endif
 
   output("=========== Semua Transaksi ===========")
+
   for i <- 0 to nT - 1 do
-    if dataTransaksi[i].IDPelanggan == "ANON" then
+    nama <- "Anonymous"
+    nohp <- "-"
+
+    for j <- 0 to nP - 1 do
+      if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan then
+        nama <- dataPelanggan[j].Nama
+        nohp <- dataPelanggan[j].noHp
+      endif
+    endfor
+
+    output("----------------------------------------")
+    output("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
+    output("Nama         :", nama)
+    output("No HP        :", nohp)
+    output("Berat        :", dataTransaksi[i].Berat)
+    output("Layanan      :", dataTransaksi[i].Layanan)
+    output("Tanggal      :", dataTransaksi[i].Tanggal)
+    output("Total Harga  :", dataTransaksi[i].TotalHarga)
+  endfor
+
+  output("========================================")
+endprocedure
+
+
+procedure tampilKey(in nP, nT : integer)
+
+kamus
+  key : string
+  found : boolean
+  pilihan : integer
+  hari, bulan, tahun : string
+  nama : string
+  i, j : integer
+
+algoritma
+  found <- false
+
+  output("===== Cari Berdasarkan Kata Kunci =====")
+  output("1. Cari Nama")
+  output("2. Cari Tanggal")
+  output("=======================================")
+  output("Masukan pilihan Anda: ")
+  input(pilihan)
+
+  SWITCH(pilihan)
+    CASE 1:
+      output("Masukkan Nama: ")
+      input(key)
+    CASE 2:
+      output("Masukkan tanggal (dd mm yyyy): ")
+      input(hari, bulan, tahun)
+      key <- tahun + bulan + hari
+    DEFAULT:
+      output("Pilihan tidak valid.")
+      return
+  ENDSWITCH
+
+  for i <- 0 to nT - 1 do
+    nama <- ""
+
+    for j <- 0 to nP - 1 do
+      if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan then
+        nama <- dataPelanggan[j].Nama
+      endif
+    endfor
+
+    if nama == key or dataTransaksi[i].Tanggal == key then
+      found <- true
+
       output("----------------------------------------")
-      output("ID Pelanggan : ANON")
-      output("Nama         : Anonymous")
-      output("No HP        : -")
+      output("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
+      output("Nama         :", nama)
       output("Berat        :", dataTransaksi[i].Berat)
       output("Layanan      :", dataTransaksi[i].Layanan)
       output("Tanggal      :", dataTransaksi[i].Tanggal)
       output("Total Harga  :", dataTransaksi[i].TotalHarga)
-      output("----------------------------------------")
-
-    else
-      for j <- 0 to nP - 1 do
-        if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan then
-          output("----------------------------------------")
-          output("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
-          output("Nama         :", dataPelanggan[j].Nama)
-          output("No HP        :", dataPelanggan[j].noHp)
-          output("Berat        :", dataTransaksi[i].Berat)
-          output("Layanan      :", dataTransaksi[i].Layanan)
-          output("Tanggal      :", dataTransaksi[i].Tanggal)
-          output("Total Harga  :", dataTransaksi[i].TotalHarga)
-          output("----------------------------------------")
-        endif
-      endfor
-    endif
-    output("========================================")
-  endfor
-endprocedure
-
-procedure tampilKey(in nP, nT : integer)
-kamus
-  key       : string
-  found     : boolean
-  i, j, idx : integer
-algoritma
-  found <- false
-  output("===== Cari Berdasarkan Kata Kunci =====")
-  output("Masukkan Kata Kunci (No HP/Tanggal): ")
-  input(key)
-
-  output("------------Hasil Pencarian------------")
-  for i <- 0 to nT - 1 do
-    idx <- -1
-    for j <- 0 to nP - 1 do
-      if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan then
-        idx <- j
-      endif
-    endfor
-    if dataTransaksi[i].Tanggal == key or (idx != -1 and dataPelanggan[idx].noHp == key) then
-      found <- true
-      output("Tanggal     :", dataTransaksi[i].Tanggal)
-      output("ID          :", dataTransaksi[i].IDPelanggan)
-      output("Total Harga :", dataTransaksi[i].TotalHarga)
-      output("-----------------------------------------")
     endif
   endfor
 
   if not found then
     output("Data tidak ditemukan.")
   endif
+
   output("========================================")
 endprocedure
 
 
-procedure pendapatanTotal(in nT : integer)
-kamus
-  total : integer
-algoritma
-  total <- hitungTotalRekursif(0, nT)
-  output("=========== Total Pendapatan ===========")
-  output("Jumlah transaksi         :", nT)
-  output("Total seluruh pendapatan :", total)
-  output("========================================")
-endprocedure
+procedure urutHarga(in/out nP, nT : integer)
 
-function hitungTotalRekursif(in i, n : integer) -> integer
-algoritma
-  if i >= n then
-    return 0
-  else
-    return dataTransaksi[i].TotalHarga + hitungTotalRekursif(i+1, n)
-  endif
-endfunction
-
-procedure tampilUrutan(in/out nP, nT : integer)
 kamus
   pilihan : integer
+  i, j : integer
+  temp : Transaksi
+
 algoritma
   output("========== Urutkan Transaksi ==========")
   output("1. Urutkan dari yang terkecil ke terbesar")
   output("2. Urutkan dari yang terbesar ke terkecil")
   output("=======================================")
+  output("Masukan pilihan Anda: ")
   input(pilihan)
-  SWITCH (pilihan)
+
+  for i <- 1 to nT - 1 do
+    temp <- dataTransaksi[i]
+    j <- i - 1
+
+    while j >= 0 and dataTransaksi[j].TotalHarga > temp.TotalHarga do
+      dataTransaksi[j+1] <- dataTransaksi[j]
+      j <- j - 1
+    endwhile
+
+    dataTransaksi[j+1] <- temp
+  endfor
+
+  SWITCH(pilihan)
     CASE 1:
-      selectionSortAscending(nT)
-      output("---------Data Ascending---------")
       tampilSemua(nP, nT)
     CASE 2:
-      insertionSortDescending(nT)
-      output("---------Data Descending---------")
+      for i <- 0 to (nT div 2) - 1 do
+        temp <- dataTransaksi[i]
+        dataTransaksi[i] <- dataTransaksi[nT-1-i]
+        dataTransaksi[nT-1-i] <- temp
+      endfor
       tampilSemua(nP, nT)
     DEFAULT:
       output("Pilihan tidak valid.")
@@ -548,62 +618,85 @@ algoritma
   ENDSWITCH
 endprocedure
 
-procedure selectionSortAscending(in/out nT : integer)
+
+procedure urutTanggal(in/out nP, nT : integer)
+
 kamus
-  pass, idx, i : integer
-  temp         : Transaksi
+  pilihan : integer
+  i, j, idx : integer
+  temp : Transaksi
+
 algoritma
-  pass <- 0
-  while pass < nT - 1 do
-    idx <- pass
-    i <- pass + 1
-    while i < nT do
-      if dataTransaksi[idx].TotalHarga > dataTransaksi[i].TotalHarga then
-        idx <- i
+  output("========== Urutkan Transaksi ==========")
+  output("1. Urutkan dari yang terkecil ke terbesar")
+  output("2. Urutkan dari yang terbesar ke terkecil")
+  output("=======================================")
+  output("Masukan pilihan Anda: ")
+  input(pilihan)
+
+  for i <- 0 to nT - 2 do
+    idx <- i
+
+    for j <- i + 1 to nT - 1 do
+      if dataTransaksi[j].Tanggal < dataTransaksi[idx].Tanggal then
+        idx <- j
       endif
-      i <- i + 1
-    endwhile
+    endfor
 
-    temp <- dataTransaksi[pass]
-    dataTransaksi[pass] <- dataTransaksi[idx]
+    temp <- dataTransaksi[i]
+    dataTransaksi[i] <- dataTransaksi[idx]
     dataTransaksi[idx] <- temp
-    pass <- pass + 1
-  endwhile
+  endfor
+
+  SWITCH(pilihan)
+    CASE 1:
+      tampilSemua(nP, nT)
+    CASE 2:
+      for i <- 0 to (nT div 2) - 1 do
+        temp <- dataTransaksi[i]
+        dataTransaksi[i] <- dataTransaksi[nT-1-i]
+        dataTransaksi[nT-1-i] <- temp
+      endfor
+      tampilSemua(nP, nT)
+    DEFAULT:
+      output("Pilihan tidak valid.")
+      output("========================================")
+  ENDSWITCH
 endprocedure
 
-procedure insertionSortDescending(in/out nT : integer)
-kamus
-  pass, i : integer
-  temp    : Transaksi
-algoritma
-  pass <- 1
-  while pass < nT do
-    temp <- dataTransaksi[pass]
-    i <- pass - 1
-    while i >= 0 and temp.TotalHarga > dataTransaksi[i].TotalHarga do
-      dataTransaksi[i+1] <- dataTransaksi[i]
-      i <- i - 1
-    endwhile
-    dataTransaksi[i+1] <- temp
-    pass <- pass + 1
- endwhile
-endprocedure
 
 procedure binarySearchHarga(in/out nT : integer)
+
 kamus
   cari, left, right, mid : integer
-  ketemu                 : boolean
+  ketemu : boolean
+  i, j : integer
+  temp : Transaksi
+
 algoritma
-  selectionSortAscending(nT)
-  ketemu <- false
+  for i <- 1 to nT - 1 do
+    temp <- dataTransaksi[i]
+    j <- i - 1
+
+    while j >= 0 and dataTransaksi[j].TotalHarga > temp.TotalHarga do
+      dataTransaksi[j+1] <- dataTransaksi[j]
+      j <- j - 1
+    endwhile
+
+    dataTransaksi[j+1] <- temp
+  endfor
+
   output("===== Cari Berdasarkan Total Harga =====")
   output("Masukkan total harga yang dicari: ")
   input(cari)
+
   left <- 0
   right <- nT - 1
+  ketemu <- false
 
   while left <= right and not ketemu do
-    mid <- (left + right) / 2
+    mid <- (left + right) div 2
+
     if dataTransaksi[mid].TotalHarga == cari then
       ketemu <- true
       output("-------------Data Ditemukan-------------")
@@ -611,7 +704,6 @@ algoritma
       output("Tanggal      :", dataTransaksi[mid].Tanggal)
       output("Layanan      :", dataTransaksi[mid].Layanan)
       output("Total Harga  :", dataTransaksi[mid].TotalHarga)
-      output("----------------------------------------")
     elseif cari < dataTransaksi[mid].TotalHarga then
       right <- mid - 1
     else
@@ -622,5 +714,51 @@ algoritma
   if not ketemu then
     output("Data tidak ditemukan.")
   endif
+
   output("========================================")
 endprocedure
+
+
+procedure pendapatanPeriode(in nT : integer)
+
+kamus
+  awal, akhir : string
+  h1, b1, t1 : string
+  h2, b2, t2 : string
+  total : integer
+
+algoritma
+  output("=========== Total Pendapatan ===========")
+
+  output("Tanggal awal (dd mm yyyy) : ")
+  input(h1, b1, t1)
+  output("Tanggal akhir (dd mm yyyy): ")
+  input(h2, b2, t2)
+  awal <- t1 + b1 + h1
+  akhir <- t2 + b2 + h2
+
+  total <- hitungTotalRekursif(0, nT, awal, akhir)
+  output("Total pendapatan :", total)
+  output("========================================")
+endprocedure
+
+
+function hitungTotalRekursif(in i, n : integer, in awal, akhir : string) -> integer
+
+kamus
+  total : integer
+
+algoritma
+  if i >= n then
+    return 0
+  endif
+
+  total <- 0
+
+  if dataTransaksi[i].Tanggal >= awal and
+     dataTransaksi[i].Tanggal <= akhir then
+    total <- dataTransaksi[i].TotalHarga
+  endif
+
+  return total + hitungTotalRekursif(i + 1, n, awal, akhir)
+endfunction

@@ -90,6 +90,8 @@ func menuTambah(nP *int, nT *int) {
 	case 2:
 		fmt.Println()
 		tambahTransaksi(nP, nT)
+	case 3:
+		return
 	default:
 		fmt.Println("Mohon masukan pilihan yang valid.")
 	}
@@ -166,7 +168,6 @@ func menuEdit(nP *int, nT *int) {
 		fmt.Println()
 		hapusTransaksi(nP, nT)
 	case 5:
-		fmt.Println()
 		return
 	default:
 		fmt.Println("Mohon masukan pilihan yang valid.")
@@ -341,13 +342,11 @@ func editTransaksi(nP *int, nT *int) {
 			idPelanggan = dataPelanggan[i].ID
 		}
 	}
-
 	for i := 0; i < *nT; i++ {
 		if dataTransaksi[i].IDPelanggan == idPelanggan && dataTransaksi[i].Tanggal == tanggalCari {
 			idx = i
 		}
 	}
-
 	if idx == -1 {
 		fmt.Println("Transaksi tidak ditemukan.")
 		fmt.Println("========================================")
@@ -432,7 +431,6 @@ func tampilSemua(nP *int, nT *int) {
 	for i := 0; i < *nT; i++ {
 		nama := "Anonymous"
 		nohp := "-"
-
 		for j := 0; j < *nP; j++ {
 			if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
 				nama = dataPelanggan[j].Nama
@@ -459,12 +457,13 @@ func tampilKey(nP *int, nT *int) {
 	fmt.Println("===== Cari Berdasarkan Kata Kunci =====")
 	fmt.Println("1. Cari Nama")
 	fmt.Println("2. Cari Tanggal")
-	fmt.Print("Pilih: ")
+	fmt.Println("=======================================")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 
 	switch pilihan {
 	case 1:
-		fmt.Print("Masukkan Nama / No HP: ")
+		fmt.Print("Masukkan Nama: ")
 		fmt.Scan(&key)
 	case 2:
 		var hari, bulan, tahun string
@@ -477,23 +476,23 @@ func tampilKey(nP *int, nT *int) {
 	}
 
 	for i := 0; i < *nT; i++ {
-
 		nama := ""
 		for j := 0; j < *nP; j++ {
 			if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
 				nama = dataPelanggan[j].Nama
 			}
 		}
-
 		if nama == key || dataTransaksi[i].Tanggal == key {
 			found = true
 			fmt.Println("----------------------------------------")
+			fmt.Println("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
 			fmt.Println("Nama         :", nama)
+			fmt.Println("Berat        :", dataTransaksi[i].Berat)
+			fmt.Println("Layanan      :", dataTransaksi[i].Layanan)
 			fmt.Println("Tanggal      :", dataTransaksi[i].Tanggal)
 			fmt.Println("Total Harga  :", dataTransaksi[i].TotalHarga)
 		}
 	}
-
 	if !found {
 		fmt.Println("Data tidak ditemukan.")
 	}
@@ -508,7 +507,7 @@ func urutHarga(nP *int, nT *int) {
 	fmt.Println("1. Urutkan dari yang terkecil ke terbesar")
 	fmt.Println("2. Urutkan dari yang terbesar ke terkecil")
 	fmt.Println("=======================================")
-	fmt.Print("Pilih: ")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 
 	for i := 1; i < *nT; i++ {
@@ -542,7 +541,7 @@ func urutTanggal(nP *int, nT *int) {
 	fmt.Println("1. Urutkan dari yang terkecil ke terbesar")
 	fmt.Println("2. Urutkan dari yang terbesar ke terkecil")
 	fmt.Println("=======================================")
-	fmt.Print("Pilih: ")
+	fmt.Print("Masukan pilihan Anda: ")
 	fmt.Scan(&pilihan)
 
 	for i := 0; i < *nT-1; i++ {
@@ -597,30 +596,24 @@ func binarySearchHarga(nT *int) {
 	right = *nT - 1
 
 	for left <= right && !ketemu {
-
 		mid = (left + right) / 2
 
 		if dataTransaksi[mid].TotalHarga == cari {
-
 			ketemu = true
-
 			fmt.Println("-------------Data Ditemukan-------------")
 			fmt.Println("ID Pelanggan :", dataTransaksi[mid].IDPelanggan)
 			fmt.Println("Tanggal      :", dataTransaksi[mid].Tanggal)
 			fmt.Println("Layanan      :", dataTransaksi[mid].Layanan)
 			fmt.Println("Total Harga  :", dataTransaksi[mid].TotalHarga)
-
 		} else if cari < dataTransaksi[mid].TotalHarga {
 			right = mid - 1
 		} else {
 			left = mid + 1
 		}
 	}
-
 	if !ketemu {
 		fmt.Println("Data tidak ditemukan.")
 	}
-
 	fmt.Println("========================================")
 }
 
@@ -630,13 +623,10 @@ func pendapatanPeriode(nT *int) {
 	var h2, b2, t2 string
 
 	fmt.Println("=========== Total Pendapatan ===========")
-
 	fmt.Print("Tanggal awal (dd mm yyyy) : ")
 	fmt.Scan(&h1, &b1, &t1)
-
 	fmt.Print("Tanggal akhir (dd mm yyyy): ")
 	fmt.Scan(&h2, &b2, &t2)
-
 	awal = t1 + b1 + h1
 	akhir = t2 + b2 + h2
 
@@ -651,7 +641,6 @@ func hitungTotalRekursif(i int, n int, awal string, akhir string) int {
 	if i >= n {
 		return 0
 	}
-
 	total := 0
 
 	if dataTransaksi[i].Tanggal >= awal &&
@@ -662,5 +651,3 @@ func hitungTotalRekursif(i int, n int, awal string, akhir string) int {
 
 	return total + hitungTotalRekursif(i+1, n, awal, akhir)
 }
-
-// tes buat dicommit
