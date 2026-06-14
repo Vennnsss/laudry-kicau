@@ -519,59 +519,59 @@ kamus
   found : boolean
   pilihan : integer
   hari, bulan, tahun : string
-  nama : string
+  nama, nohp : string
   i, j : integer
 
 algoritma
-  found <- false
+    found <- false
 
-  output("===== Cari Berdasarkan Kata Kunci =====")
-  output("1. Cari Nama")
-  output("2. Cari Tanggal")
-  output("=======================================")
-  output("Masukan pilihan Anda: ")
-  input(pilihan)
+    output("===== Cari Berdasarkan Kata Kunci =====")
+    output("1. Cari Nama")
+    output("2. Cari Tanggal")
+    output("=======================================")
+    output("Masukan pilihan Anda: ")
+    input(pilihan)
 
-  SWITCH(pilihan)
-    CASE 1:
-      output("Masukkan Nama: ")
-      input(key)
-    CASE 2:
-      output("Masukkan tanggal (dd mm yyyy): ")
-      input(hari, bulan, tahun)
-      key <- tahun + bulan + hari
-    DEFAULT:
-      output("Pilihan tidak valid.")
-      return
-  ENDSWITCH
+    switch(pilihan)
+        case 1:
+            output("Masukkan Nama: ")
+            input(key)
+        case 2:
+            output("Masukkan tanggal (dd mm yyyy): ")
+            input(hari, bulan, tahun)
+            key <- tahun + bulan + hari
+        default:
+            output("Pilihan tidak valid.")
+            return
+    endswitch
 
-  for i <- 0 to nT - 1 do
-    nama <- ""
-
-    for j <- 0 to nP - 1 do
-      if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan then
-        nama <- dataPelanggan[j].Nama
-      endif
+    for i <- 0 to nT - 1 do
+        nama <- ""
+        nohp <- "-"
+        for j <- 0 to nP - 1 do
+            if dataPelanggan[j].ID = dataTransaksi[i].IDPelanggan then
+                nama <- dataPelanggan[j].Nama
+                nohp <- dataPelanggan[j].noHp
+            endif
+        endfor
+        if nama = key or dataTransaksi[i].Tanggal = key then
+            found <- true
+            output("----------------------------------------")
+            output("ID Pelanggan : ", dataTransaksi[i].IDPelanggan)
+            output("Nama         : ", nama)
+            output("No HP        : ", nohp)
+            output("Berat        : ", dataTransaksi[i].Berat)
+            output("Layanan      : ", dataTransaksi[i].Layanan)
+            output("Tanggal      : ", dataTransaksi[i].Tanggal)
+            output("Total Harga  : ", dataTransaksi[i].TotalHarga)
+        endif
     endfor
 
-    if nama == key or dataTransaksi[i].Tanggal == key then
-      found <- true
-
-      output("----------------------------------------")
-      output("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
-      output("Nama         :", nama)
-      output("Berat        :", dataTransaksi[i].Berat)
-      output("Layanan      :", dataTransaksi[i].Layanan)
-      output("Tanggal      :", dataTransaksi[i].Tanggal)
-      output("Total Harga  :", dataTransaksi[i].TotalHarga)
+    if not found then
+        output("Data tidak ditemukan.")
     endif
-  endfor
+    output("========================================")
 
-  if not found then
-    output("Data tidak ditemukan.")
-  endif
-
-  output("========================================")
 endprocedure
 
 

@@ -477,9 +477,8 @@ func tampilKey(nP *int, nT *int) {
 
 	for i := 0; i < *nT; i++ {
 		nama := ""
-		nohp := "-" // Menyimpan nomor HP sebagai pengenal unik ganda
+		nohp := "-"
 
-		// Cari data profil pelanggan berdasarkan IDPelanggan yang ada di transaksi
 		for j := 0; j < *nP; j++ {
 			if dataPelanggan[j].ID == dataTransaksi[i].IDPelanggan {
 				nama = dataPelanggan[j].Nama
@@ -487,13 +486,12 @@ func tampilKey(nP *int, nT *int) {
 			}
 		}
 
-		// Validasi pencarian
 		if nama == key || dataTransaksi[i].Tanggal == key {
 			found = true
 			fmt.Println("----------------------------------------")
 			fmt.Println("ID Pelanggan :", dataTransaksi[i].IDPelanggan)
 			fmt.Println("Nama         :", nama)
-			fmt.Println("No HP        :", nohp) // Ditampilkan sebagai double check identitas pelanggan
+			fmt.Println("No HP        :", nohp)
 			fmt.Println("Berat        :", dataTransaksi[i].Berat)
 			fmt.Println("Layanan      :", dataTransaksi[i].Layanan)
 			fmt.Println("Tanggal      :", dataTransaksi[i].Tanggal)
